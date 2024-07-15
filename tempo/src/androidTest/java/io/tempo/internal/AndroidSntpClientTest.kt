@@ -17,7 +17,7 @@
 package io.tempo.internal
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.natpryce.hamkrest.assertion.assert
+import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.isA
 import com.natpryce.hamkrest.lessThan
 import io.tempo.internal.data.AndroidSntpClient
@@ -40,13 +40,13 @@ internal class AndroidSntpClientTest {
             throw RuntimeException(result.errorMsg)
         }
 
-        assert.that(result, isA<Result.Success>())
+        assertThat(result, isA<Result.Success>())
 
         if (result is Result.Success) {
             val ntpNow = result.ntpTimeMs
             val systemNow = System.currentTimeMillis()
 
-            assert.that(abs(ntpNow - systemNow), lessThan(1000L))
+            assertThat(abs(ntpNow - systemNow), lessThan(1000L))
         }
     }
 
@@ -54,9 +54,9 @@ internal class AndroidSntpClientTest {
     fun testTimeout() {
         val address = AndroidSntpClient.queryHostAddress(googleNtp)
         val result = AndroidSntpClient.requestTime(address, AndroidSntpClient.NTP_PORT, 10)
-        assert.that(result, isA<Result.Failure>())
+        assertThat(result, isA<Result.Failure>())
         if (result is Result.Failure) {
-            assert.that(result.error!!, isA<SocketTimeoutException>())
+            assertThat(result.error!!, isA<SocketTimeoutException>())
         }
     }
 }
