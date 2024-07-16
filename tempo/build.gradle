@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: "de.mannodermaus.android-junit5"
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion androidConfig.compileSdkVersion
@@ -26,6 +27,16 @@ android {
                 engines {
                     include 'spek2'
                 }
+            }
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
             }
         }
     }
